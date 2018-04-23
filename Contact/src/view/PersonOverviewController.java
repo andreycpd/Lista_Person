@@ -47,6 +47,15 @@ public class PersonOverviewController {
 		// Inicializa a tablea de pessoa com duas colunas. primerioNomeColumn
 		primeiroNomeColumn.setCellValueFactory(cellData -> cellData.getValue().getPrimeiroNome());
 		segundoNomeColumn.setCellValueFactory(cellData -> cellData.getValue().getSegundoNome());
+		
+
+	    // Limpa os detalhes da pessoa.
+	    showPersonDetails(null);
+
+	    // Detecta mudanças de seleção e mostra os detalhes da pessoa quando houver mudança.
+	    PessoaTable.getSelectionModel().selectedItemProperty().addListener(
+	            (observable, oldValue, newValue) -> showPersonDetails(newValue));
+		
 	}
 
 	/**
@@ -63,23 +72,33 @@ public class PersonOverviewController {
 		PessoaTable.setItems(mainApp.getPessoaData());
 	}
 
-	 private void showPersonDetails(Pessoa pessoa) {
-	 if (pessoa != null) {
-	 primerioNomeLabel.setText(pessoa.getPrimeiroNome());
-	// segundoNomeLabel.setText(pessoa.getSegundoNome());
-	// ruaLabel.setText(pessoa.getRua());
-	// cepLabel.setText(Integer.toString(pessoa.getCep()));
-	// cidadeLabel.setText(pessoa.getCidade());
-	//
-	 } else {
-	 primerioNomeLabel.setText("");
-	 segundoNomeLabel.setText("");
-	 ruaLabel.setText("");
-	 cepLabel.setText("");
-	 cidadeLabel.setText("");
-//	 aniversarioLabel.setText(DateUtil.format(pessoa.getAniversario()));
-	 }
+	@SuppressWarnings("unused")
+	private void showPersonDetails(Pessoa pessoa) {
+		if (pessoa != null) {
+			primerioNomeLabel.setText(pessoa.getPrimeiroNome().toString());
+			segundoNomeLabel.setText(pessoa.getSegundoNome().toString());
+			ruaLabel.setText(pessoa.getRua().toString());
+			cepLabel.setText(pessoa.getCep().toString());
+			cidadeLabel.setText(pessoa.getCidade().toString());
+			//
+		} else {
+			primerioNomeLabel.setText("");
+			segundoNomeLabel.setText("");
+			ruaLabel.setText("");
+			cepLabel.setText("");
+			cidadeLabel.setText("");
+		  //aniversarioLabel.setText(DateUtil.format(String.valueOf(pessoa.getAniversario())));
+		}
+
+	}
 	
-	 }
+	/**
+	 * Chamado quando o usuário clica no botão delete.
+	 */
+	@FXML
+	private void handleDeletePerson() {
+	    int selectedIndex = PessoaTable.getSelectionModel().getSelectedIndex();
+	    PessoaTable.getItems().remove(selectedIndex);
+	}
 
 }
